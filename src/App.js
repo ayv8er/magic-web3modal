@@ -11,8 +11,15 @@ function App() {
 
   const handleLogin = async () => {
     try {
-      const accounts = await magic.wallet.connectWithUI();
-      console.log(accounts);
+      const handle = magic.wallet.connectWithUI()
+      // listen for event to get Magic DID Token
+        .on('id-token-created', (params) => {
+          console.log('Magic didToken, if needed ==>', params.idToken)
+        })
+      
+      // Awaiting connectWithUI resolves to eth_accounts
+      const accounts = await handle;
+      console.log(accounts)
       if (accounts) {
         getUserData();
       }
